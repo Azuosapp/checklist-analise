@@ -5,25 +5,18 @@
   "status": null,
   "participants": [
     {
-      "id": "vinicius-gabriel",
-      "name": "Vinicius Gabriel",
-      "email": "github@vinicius-gpl.com",
-      "department": "TI",
+      "id": "p-3f660a9404234e1eac85599e0099dc30",
+      "name": null,
+      "email": null,
+      "department": null,
       "role": "technical",
-      "github_logins": [
-        "vinicius-gpl"
-      ],
-      "git_emails": [
-        "github@vinicius-gpl.com",
-        "157775713+vinicius-gpl@users.noreply.github.com",
-        "vinicius.gabriel.p.leitao@gmail.com",
-        "vinicius.gabriel.p.leitao+github@gmail.com"
-      ],
+      "github_logins": [],
+      "git_emails": [],
       "prior_it_experience": null,
-      "position": "junior"
+      "position": null
     },
     {
-      "id": "unidentified-business-participant",
+      "id": "p-94037219eca9496fad26353ff6946ff2",
       "name": null,
       "email": null,
       "department": null,
@@ -41,7 +34,7 @@
         "contato@azuoscontabil.com.br"
       ],
       "participant_ids": [
-        "unidentified-business-participant"
+        "p-94037219eca9496fad26353ff6946ff2"
       ],
       "historical_attribution": "unresolved"
     }
@@ -61,15 +54,16 @@
   "technical_blockers": [],
   "traditional_estimate_days": null,
   "pending_fields": [
-    "participants.unidentified-business-participant.name",
-    "participants.unidentified-business-participant.email",
-    "participants.unidentified-business-participant.department",
     "status",
     "milestones.started_at",
     "milestones.mvp_at",
     "milestones.production_at",
     "requirements_meetings",
-    "traditional_estimate_days"
+    "traditional_estimate_days",
+    "privacy.controller",
+    "privacy.contact",
+    "privacy.lawful_basis",
+    "privacy.retention_policy"
   ],
   "evidence": [
     {
@@ -81,7 +75,7 @@
     {
       "source": "owner_confirmation",
       "confirmed_at": "2026-10-19",
-      "note": "Papéis e nomes informados pelo responsável; campos não informados permanecem null. Vinicius é desenvolvedor júnior e Guilherme auxiliar, ambos de TI; Guilherme não tinha experiência prévia em TI."
+      "note": "Papéis históricos informados pelo responsável; perfis pessoais não são publicados no cadastro atual."
     },
     {
       "source": "template_documentation",
@@ -93,5 +87,18 @@
       "tool": "Codex",
       "note": "Ferramenta usada para instrumentar este repositório."
     }
-  ]
+  ],
+  "privacy": {
+    "commit_identity": "pseudonymous",
+    "governance_status": "pending_review",
+    "purpose": "internal_delivery_metrics",
+    "controller": null,
+    "contact": null,
+    "lawful_basis": null,
+    "retention_policy": null,
+    "repository_visibility": "public",
+    "visibility_checked_at": "2026-10-19",
+    "publication_status": "not_authorized"
+  },
+  "technical_interventions": []
 }
