@@ -1,9 +1,12 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Sistema de checklist de análise contábil e fiscal do Grupo Azuos." />
+    <meta
+      name="description"
+      content="Sistema de checklist de análise contábil e fiscal do Grupo Azuos."
+    />
     <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" content="#1b3a8c" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -12,6 +15,25 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <title>Checklist de Análise · Grupo Azuos</title>
+    <script>
+      // O cookie do grupo vence a preferência antiga, antes da primeira pintura.
+      (() => {
+        let theme = 'dark';
+        try {
+          const cookie = document.cookie
+            .split(';')
+            .map((part) => part.trim())
+            .find((part) => part.startsWith('azuos-theme='))
+            ?.slice(12);
+          const saved =
+            cookie === 'light' || cookie === 'dark' ? cookie : localStorage.getItem('azuos-theme');
+          if (saved === 'light' || saved === 'dark') theme = saved;
+        } catch {
+          /* Sem armazenamento, o tema escuro continua disponível. */
+        }
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

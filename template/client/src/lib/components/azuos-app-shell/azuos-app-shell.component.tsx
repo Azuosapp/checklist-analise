@@ -1,3 +1,7 @@
+import {
+  AzuosSessionActions,
+  type AzuosSessionActionsProps,
+} from '../azuos-session-actions/azuos-session-actions.component';
 import { type ReactNode } from 'react';
 
 import { AzuosAppShellNavEntry } from '../azuos-app-shell-nav-entry/azuos-app-shell-nav-entry.component';
@@ -36,6 +40,7 @@ import { AzuosPersonAvatar } from '../azuos-person-avatar/azuos-person-avatar.co
  */
 export type AzuosAppShellProps = {
   children: ReactNode;
+  account?: AzuosSessionActionsProps;
   data?: {
     /** Contador ao lado do item, pela `key` dele. Zero não desenha selo. */
     badges?: Partial<Record<string, number>>;
@@ -45,7 +50,7 @@ export type AzuosAppShellProps = {
   state?: { isCollapsed?: boolean; activeKey?: string };
 };
 
-export function AzuosAppShell({ children, data, ui, state }: AzuosAppShellProps) {
+export function AzuosAppShell({ account, children, data, ui, state }: AzuosAppShellProps) {
   const items = ui?.items ?? NAV_ITEMS;
 
   return (
@@ -82,9 +87,7 @@ export function AzuosAppShell({ children, data, ui, state }: AzuosAppShellProps)
 
         <SidebarFooter>
           <UserEntry data={{ user: data?.user }} />
-          {/* Não há botão "Sair": o template não tem login. Quem encerra a sessão é o provedor
-              de identidade que fica na frente dele — um botão aqui prometeria um efeito que a
-              aplicação não tem como cumprir. */}
+          <AzuosSessionActions {...account} />
         </SidebarFooter>
 
         {/* A borda arrastável: recolher também pela lateral, sem procurar o botão. */}

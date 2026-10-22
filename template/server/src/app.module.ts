@@ -1,3 +1,4 @@
+import { ProfileModule } from './modules/profile/profile.module';
 import { join } from 'node:path';
 
 import { Module } from '@nestjs/common';
@@ -36,6 +37,7 @@ const CLIENT_DIST = join(__dirname, '..', '..', 'client', 'dist');
        linha o token `DB` não existe em lugar nenhum, e todo repository falha na injeção. */
     DbModule,
     AuthModule,
+    ProfileModule,
     TasksModule,
   ],
   providers: [{ provide: APP_PIPE, useClass: ZodValidationPipe }],
