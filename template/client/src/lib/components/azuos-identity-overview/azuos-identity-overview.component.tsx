@@ -2,10 +2,20 @@ import { Fragment, type ReactNode } from 'react';
 import { Settings } from 'lucide-react';
 
 import { AzuosActionButton } from '../azuos-action-button/azuos-action-button.component';
+import { AzuosPageHeader } from '../azuos-page-header/azuos-page-header.component';
+import { AzuosPanelCard } from '../azuos-panel-card/azuos-panel-card.component';
+import { AzuosPersonAvatar } from '../azuos-person-avatar/azuos-person-avatar.component';
+import { AzuosThemeToggle } from '../azuos-theme-toggle/azuos-theme-toggle.component';
 
 export type AzuosIdentityOverviewProps = {
   data: {
-    person: { name: string; email: string; roleLabel: string; avatarUrl?: string | null } | null;
+    person: {
+      id?: string;
+      name: string;
+      email: string;
+      roleLabel: string;
+      avatarUrl?: string | null;
+    } | null;
     details?: readonly (readonly [string, string])[];
     accountUrl?: string | null;
   };
@@ -15,7 +25,7 @@ export type AzuosIdentityOverviewProps = {
   actions?: { onRetry?: () => void };
 };
 
-/** Resumo de identidade e dados da conta: os mesmos cartões e tokens em todos os sistemas. */
+/** Identidade, dados da conta e preferências seguem o perfil de referência do CertMonitor. */
 export function AzuosIdentityOverview({
   data,
   state,
@@ -35,69 +45,71 @@ export function AzuosIdentityOverview({
   const details = data.details ?? [];
   return (
     <section
-      className="mx-auto flex w-full max-w-4xl flex-col gap-6 px-4 pb-10 sm:px-6"
+      className="mx-auto flex w-full max-w-3xl flex-col gap-5 px-4 pb-10 sm:px-6"
       aria-label="Meu perfil"
     >
-      {identity ?? <IdentityHeader person={person} details={details} />}
+      <AzuosPageHeader
+        data={{ title: 'Meu perfil', description: 'Quem o sistema entende que você é.' }}
+      />
+      {identity ?? <AzuosIdentityHeader person={person} details={details} />}
 
-      <div className="bg-card border-border rounded-surface border p-5 shadow-xs">
-        <h2 className="text-foreground mb-4 text-sm font-semibold">Dados da conta</h2>
-        <dl className="grid gap-x-6 gap-y-2 text-sm sm:grid-cols-[auto_1fr]">
-          {[
-            ['Nome', person.name],
-            ['E-mail', person.email],
-            ['Perfil de acesso', person.roleLabel],
-            ...details,
-          ].map(([label, value]) => (
-            <Fragment key={label}>
-              <dt className="text-muted-foreground">{label}</dt>
-              <dd className="text-foreground min-w-0 break-words">{value}</dd>
-            </Fragment>
-          ))}
-        </dl>
-      </div>
+      <AzuosPanelCard
+        data={{
+          title: 'Dados da conta',
+          hint: 'Nome, e-mail e perfil são mantidos na conta do grupo.',
+        }}
+      >
+        <AccountFacts person={person} details={details} />
+        <AccountLink url={data.accountUrl} />
+      </AzuosPanelCard>
 
-      <AccountLink url={data.accountUrl} />
+      <AzuosPanelCard data={{ title: 'Preferências', hint: 'Valem só neste navegador.' }}>
+        <div className="flex items-center justify-between gap-4 text-sm">
+          <span className="text-muted-foreground">Tema</span>
+          <AzuosThemeToggle />
+        </div>
+      </AzuosPanelCard>
       {children}
     </section>
   );
 }
 
 type Person = NonNullable<AzuosIdentityOverviewProps['data']['person']>;
-function IdentityHeader({
+
+export function AzuosIdentityHeader({
   person,
-  details,
+  details = [],
+  avatar,
+  aside,
+  emailAction,
+  children,
 }: {
   person: Person;
-  details: readonly (readonly [string, string])[];
+  details?: readonly (readonly [string, string])[];
+  avatar?: ReactNode;
+  aside?: ReactNode;
+  emailAction?: ReactNode;
+  children?: ReactNode;
 }) {
   return (
-    <div className="bg-card border-border rounded-surface border p-6 shadow-xs">
+    <section
+      aria-label="Identidade"
+      className="bg-card border-border rounded-surface border p-5 shadow-xs"
+    >
       <div className="flex flex-wrap items-center gap-4">
-        <div className="bg-primary-soft text-foreground ring-primary/10 relative flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-full ring-4">
-          <span className="text-xl font-bold">
-            {person.name
-              .trim()
-              .split(/\s+/)
-              .slice(0, 2)
-              .map((part) => part[0])
-              .join('')
-              .toUpperCase()}
-          </span>
-          {person.avatarUrl ? (
-            <img
-              src={person.avatarUrl}
-              alt=""
-              className="absolute inset-0 size-full object-cover"
-            />
-          ) : null}
-        </div>
+        {avatar ?? (
+          <AzuosPersonAvatar
+            name={person.name}
+            avatarUrl={person.avatarUrl}
+            ui={{ size: 'xl' }}
+          />
+        )}
         <div className="min-w-0 flex-1">
-          <p className="text-muted-foreground mb-1 text-xs">Meu perfil</p>
-          <h1 className="text-foreground text-xl font-bold tracking-tight break-words">
-            {person.name}
-          </h1>
-          <p className="text-muted-foreground mt-1 font-mono text-xs break-all">{person.email}</p>
+          <h2 className="text-foreground truncate text-base font-semibold">{person.name}</h2>
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="text-muted-foreground min-w-0 truncate text-sm">{person.email}</p>
+            {emailAction}
+          </div>
           <p className="text-muted-foreground mt-1 text-sm">
             {details
               .filter(([label]) => ['Cargo', 'Departamento', 'Setor'].includes(label))
@@ -105,30 +117,58 @@ function IdentityHeader({
               .join(' · ')}
           </p>
         </div>
-        <span className="bg-primary text-primary-foreground rounded-chip px-2 py-1 text-xs font-semibold">
+        <span className="bg-primary text-primary-foreground rounded-chip shrink-0 px-2 py-0.5 text-xs font-semibold">
           {person.roleLabel}
         </span>
+        {aside}
       </div>
-    </div>
+      {children}
+    </section>
+  );
+}
+
+function AccountFacts({
+  person,
+  details,
+}: {
+  person: Person;
+  details: readonly (readonly [string, string])[];
+}) {
+  const identifier = person.id ?? details.find(([label]) => label === 'Identificador')?.[1];
+  const rows: readonly (readonly [string, string])[] = [
+    ...(identifier ? ([['Identificador', identifier]] as const) : []),
+    ['E-mail', person.email],
+    ['Perfil', person.roleLabel],
+    ...details.filter(([label]) => label !== 'Identificador'),
+  ];
+  return (
+    <dl className="grid grid-cols-[minmax(0,8rem)_minmax(0,1fr)] gap-x-4 gap-y-3 text-sm">
+      {rows.map(([label, value]) => (
+        <Fragment key={label}>
+          <dt className="text-muted-foreground">{label}</dt>
+          <dd
+            className={
+              label === 'Identificador' ? 'font-mono text-xs break-all' : 'min-w-0 break-words'
+            }
+          >
+            {value}
+          </dd>
+        </Fragment>
+      ))}
+    </dl>
   );
 }
 
 function AccountLink({ url }: { url?: string | null }) {
   if (!url) return null;
   return (
-    <div className="bg-card border-border rounded-surface border p-5 shadow-xs">
-      <h2 className="text-foreground text-sm font-semibold">Sua conta</h2>
-      <p className="text-muted-foreground mt-1 text-sm">
-        Atualize seus dados, sua foto e sua senha na conta do grupo.
-      </p>
-      <a
-        className="text-primary dark:text-info mt-4 inline-flex items-center gap-2 text-sm font-semibold underline underline-offset-4"
-        href={url}
-      >
-        <Settings className="size-4" aria-hidden="true" />
-        Gerenciar minha conta
-      </a>
-    </div>
+    <a
+      className="text-primary dark:text-info mt-4 inline-flex items-center gap-2 text-sm font-semibold underline underline-offset-4"
+      href={url}
+    >
+      <Settings className="size-4" aria-hidden="true" />
+      Gerenciar minha conta
+    </a>
   );
 }
 

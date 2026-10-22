@@ -5,18 +5,18 @@ import { AzuosIdentityOverview } from './azuos-identity-overview.component';
 const person = { name: 'Ana Souza', email: 'ana@example.test', roleLabel: 'Consulta' };
 describe('AzuosIdentityOverview', () => {
   // feliz
-  it('shows identity and account details without a theme control', () => {
+  it('shows identity, account details and theme preferences', () => {
     render(
       <AzuosIdentityOverview
         data={{ person, accountUrl: 'https://account.example.test/profile' }}
       />,
     );
-    expect(screen.getByRole('heading', { name: person.name, level: 1 })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: person.name, level: 2 })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Gerenciar minha conta' })).toHaveAttribute(
       'href',
       'https://account.example.test/profile',
     );
-    expect(screen.queryByRole('button', { name: /Mudar para o tema/ })).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Mudar para o tema/ })).toBeVisible();
   });
   // triste
   it('shows the error without inventing an identity or account destination', () => {
