@@ -1,4 +1,4 @@
-import { LogOut, UserRound } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '../ui/sidebar';
 
@@ -13,14 +13,6 @@ export function AzuosSessionActions({ state, actions }: AzuosSessionActionsProps
   return (
     <>
       <SidebarMenu>
-        <SidebarMenuItem>
-          <SidebarMenuButton asChild tooltip="Meu perfil">
-            <a href="/profile">
-              <UserRound aria-hidden="true" />
-              <span>Meu perfil</span>
-            </a>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
         <SidebarMenuItem>
           <SidebarMenuButton
             tooltip="Sair"

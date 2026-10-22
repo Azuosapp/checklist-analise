@@ -5,14 +5,14 @@ import { AzuosSessionActions } from './azuos-session-actions.component';
 
 describe('AzuosSessionActions', () => {
   // feliz
-  it('opens profile and calls the session action from logout', () => {
+  it('calls logout without a duplicate profile shortcut', () => {
     const onSignOut = vi.fn();
     render(
       <SidebarProvider>
         <AzuosSessionActions actions={{ onSignOut }} />
       </SidebarProvider>,
     );
-    expect(screen.getByRole('link', { name: 'Meu perfil' })).toHaveAttribute('href', '/profile');
+    expect(screen.queryByRole('link', { name: 'Meu perfil' })).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Sair' }));
     expect(onSignOut).toHaveBeenCalledOnce();
   });
