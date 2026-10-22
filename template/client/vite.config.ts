@@ -66,6 +66,9 @@ export default defineConfig(({ mode }) => {
       },
     },
     preview: { port: Number(env.VITE_PREVIEW_PORT || '5109'), strictPort: true },
-    build: { outDir: 'dist', sourcemap: true },
+    /* Sem source map no build: o `.map` publica o código-fonte inteiro da tela, com
+       comentários, e qualquer pessoa o lê no DevTools → Sources. Para depurar um build
+       localmente, ligue de passagem e não comite. */
+    build: { outDir: 'dist', sourcemap: false },
   };
 });
