@@ -1,3 +1,4 @@
+import { useTheme } from '../theme/theme';
 import { profileApi } from '../api/profile.api';
 import { useQuery } from '@tanstack/react-query';
 import { useLocation } from '@tanstack/react-router';
@@ -23,6 +24,8 @@ export type AppShellModel = {
  * simplesmente não aparece.
  */
 export function useAppShellModel(): AppShellModel {
+  // Mantém a preferência compartilhada em todas as telas; o seletor fica no perfil.
+  useTheme();
   const identity = useQuery({
     queryKey: ['profile', 'me'],
     queryFn: profileApi.me,

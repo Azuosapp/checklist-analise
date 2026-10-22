@@ -9,7 +9,7 @@ describe('AzuosProfileView', () => {
         data={{ user: { name: 'Ana Souza', email: 'ana@example.test', role: 'Consulta' } }}
       />,
     );
-    expect(screen.getByRole('heading', { level: 1, name: 'Ana Souza' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 2, name: 'Ana Souza' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Dados da conta' })).toBeInTheDocument();
   });
   // triste
