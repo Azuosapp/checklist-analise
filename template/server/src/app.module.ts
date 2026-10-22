@@ -4,11 +4,13 @@ import { join } from 'node:path';
 import { Module } from '@nestjs/common';
 import { APP_PIPE } from '@nestjs/core';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { type Response } from 'express';
 import { ZodValidationPipe } from 'nestjs-zod';
 
 import { AuthModule } from './lib/auth/auth.module';
 import { AppConfigModule } from './lib/config/app-config.module';
 import { DbModule } from './lib/db/db.module';
+import { staticCacheControl } from './lib/http/static-cache.util';
 import { TasksModule } from './modules/tasks/tasks.module';
 
 /**
@@ -31,6 +33,16 @@ const CLIENT_DIST = join(__dirname, '..', '..', 'client', 'dist');
     ServeStaticModule.forRoot({
       rootPath: CLIENT_DIST,
       exclude: ['/api/{*path}', '/docs', '/docs-json'],
+      serveStaticOptions: {
+        /* Arquivo com hash (`assets/`) fica um ano no navegador; o resto revalida a cada carga
+           — o porquê está em `static-cache.util.ts`. O `serve-static` chama isto também no
+           fallback da SPA, com o caminho do `index.html`, e o `send` não sobrescreve um
+           `Cache-Control` que já veio definido. As rotas de `/api` não passam por aqui: estão
+           no `exclude` e não existem como arquivo no `dist`. */
+        setHeaders: (response: Response, filePath: string) => {
+          response.setHeader('Cache-Control', staticCacheControl(CLIENT_DIST, filePath));
+        },
+      },
     }),
     AppConfigModule,
     /* `@Global` só vale a partir do momento em que o módulo é registrado UMA vez. Sem esta

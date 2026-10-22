@@ -3,8 +3,25 @@ node_modules
 **/dist
 **/coverage
 **/storybook-static
+# Todo `.env` fica fora, e não só o de nome exato: `.env.local` e `.env.production` também
+# carregam segredo, e o `COPY . .` do build os gravaria numa camada da imagem. O `.example`
+# volta porque é documentação, sem segredo nenhum.
 .env
 **/.env
+**/.env.*
 !**/.env.example
 .git
 **/*.tsbuildinfo
+# O banco SQLite de desenvolvimento (e o WAL dele) mora em `server/data/`. Sem esta linha ele
+# entraria no contexto e na camada do `COPY . .`: dado de teste dentro da imagem, e cache do
+# build invalidado a cada gravação local.
+**/*.db
+**/*.db-wal
+**/*.db-shm
+**/*.db-journal
+# Saída de teste e de log: muda a cada execução e não é usada pelo build.
+**/test-results
+**/playwright-report
+**/blob-report
+**/.stryker-tmp
+**/*.log
