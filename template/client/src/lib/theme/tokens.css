@@ -52,11 +52,11 @@
   --brand-yellow-400: #f7ce3c;
   --brand-yellow-300: #fade7a;
 
-  --ink-900: #111827;
-  --ink-700: #374151;
-  --ink-500: #6b7280;
-  --ink-300: #d1d5db;
-  --ink-100: #f3f4f6;
+  --ink-900: var(--foreground);
+  --ink-700: var(--subtext);
+  --ink-500: var(--muted-foreground);
+  --ink-300: var(--border);
+  --ink-100: var(--surface);
 
   /**
    * ---- Os TONS DE FUNDO, do mais fundo ao mais alto ----
@@ -70,37 +70,37 @@
    * sem nome cada tela responde com um cinza diferente.
    */
   --crust: #e5e7eb;
-  --mantle: var(--ink-100);
-  --base: #f9fafb;
+  --mantle: #f3f4f6;
+  --base: #f8fafc;
   --surface: #e5e7eb;
 
   /* O terceiro degrau de texto. Aponta para o mesmo valor de `muted-foreground`: é um apelido
      por PAPEL ("texto de apoio"), não um tom novo — inventar um degrau intermediário daria
      três cinzas de texto quase iguais, e ninguém acertaria qual usar. */
-  --subtext: var(--ink-500);
+  --subtext: #4b5563;
 
   --radius: 0.625rem;
 
   /* ---- Semântica da PÁGINA ---- */
   --background: #f8fafc;
-  --foreground: var(--ink-900);
+  --foreground: #111827;
   --card: #ffffff;
-  --card-foreground: var(--ink-900);
+  --card-foreground: #111827;
   --popover: #ffffff;
-  --popover-foreground: var(--ink-900);
+  --popover-foreground: #111827;
   --primary: var(--brand-blue-800);
   --primary-foreground: #ffffff;
-  --secondary: var(--ink-100);
-  --secondary-foreground: var(--ink-900);
-  --muted: var(--ink-100);
-  --muted-foreground: var(--ink-500);
+  --secondary: #f3f4f6;
+  --secondary-foreground: #111827;
+  --muted: #f3f4f6;
+  --muted-foreground: #6b7280;
   --accent: var(--brand-blue-100);
   --accent-foreground: var(--brand-blue-900);
-  --destructive: #dc2626;
-  --border: var(--ink-300);
-  --input: var(--ink-300);
+  --destructive: #e11d48;
+  --border: #d1d5db;
+  --input: #d1d5db;
   --ring: var(--brand-blue-600);
-  --destructive-foreground: #ffffff;
+  --destructive-foreground: var(--primary-foreground);
 
   /**
    * ---- O ACENTO DE DESTAQUE ----
@@ -112,7 +112,7 @@
    * O par de texto é escuro, não branco: branco sobre amarelo não passa em contraste nenhum.
    */
   --accent-hero: var(--brand-yellow-500);
-  --accent-hero-foreground: var(--ink-900);
+  --accent-hero-foreground: var(--brand-blue-900);
 
   /**
    * ---- Os tons de ESTADO ----
@@ -131,7 +131,7 @@
   --warning-soft: #fef3c7;
   --info: #1d4ed8;
   --info-soft: #dbeafe;
-  --destructive-soft: #fee2e2;
+  --destructive-soft: #ffe4e6;
   --primary-soft: var(--brand-blue-100);
 
   /**
@@ -140,11 +140,11 @@
    * A ordem é fixa e percorrida, nunca sorteada: sorteio faria a mesma fatia mudar de cor a
    * cada recarga. Quem resolve a cor de uma fatia é `lib/utils/chart-slice.util.ts`.
    */
-  --chart-1: var(--brand-blue-600);
-  --chart-2: #10b981;
-  --chart-3: var(--brand-yellow-500);
-  --chart-4: #ef4444;
-  --chart-5: #8b5cf6;
+  --chart-1: var(--brand-blue-800);
+  --chart-2: var(--brand-yellow-500);
+  --chart-3: var(--brand-blue-500);
+  --chart-4: #10b981;
+  --chart-5: #e11d48;
 
   /**
    * ---- Semântica da BARRA LATERAL ----
@@ -171,35 +171,35 @@
  */
 :root[data-theme='dark'] {
   --background: #0b1220;
-  --foreground: var(--ink-100);
+  --foreground: #f3f4f6;
   --card: #111827;
-  --card-foreground: var(--ink-100);
+  --card-foreground: #f3f4f6;
   --popover: #111827;
-  --popover-foreground: var(--ink-100);
+  --popover-foreground: #f3f4f6;
   --primary: var(--brand-blue-500);
   --primary-foreground: #ffffff;
   --secondary: #1f2937;
-  --secondary-foreground: var(--ink-100);
-  --muted: #1f2937;
+  --secondary-foreground: #f3f4f6;
+  --muted: #18202f;
   --muted-foreground: #9ca3af;
   --accent: #1e293b;
-  --accent-foreground: var(--ink-100);
+  --accent-foreground: #f3f4f6;
   --border: rgb(255 255 255 / 0.12);
   --input: rgb(255 255 255 / 0.12);
 
-  --crust: #060b14;
-  --mantle: #0b1220;
+  --crust: #070c17;
+  --mantle: #0e1626;
   --base: #111827;
   --surface: #1f2937;
   --subtext: #9ca3af;
 
   /* O vermelho do claro (um tom 600) fica quase preto sobre o fundo escuro. Aqui ele sobe para
      o 400, que é o degrau legível — a mesma troca que `success`, `warning` e `info` fazem. */
-  --destructive: #f87171;
-  --destructive-foreground: var(--ink-900);
+  --destructive: #fb7185;
+  --destructive-foreground: var(--primary-foreground);
 
-  --accent-hero: var(--brand-yellow-400);
-  --accent-hero-foreground: var(--ink-900);
+  --accent-hero: #f7ce3c;
+  --accent-hero-foreground: #45260b;
 
   --success: #34d399;
   --success-soft: #022c22;
@@ -207,20 +207,28 @@
   --warning-soft: #451a03;
   --info: #60a5fa;
   --info-soft: #172554;
-  --destructive-soft: #450a0a;
-  --primary-soft: #16265c;
+  --destructive-soft: #4c0519;
+  --primary-soft: #142b69;
 
-  --chart-1: var(--brand-blue-500);
-  --chart-2: #34d399;
-  --chart-3: var(--brand-yellow-400);
-  --chart-4: #f87171;
-  --chart-5: #a78bfa;
+  --chart-1: #6e8de0;
+  --chart-2: #f7ce3c;
+  --chart-3: #96ade9;
+  --chart-4: #34d399;
+  --chart-5: #fb7185;
 
   /* A barra continua azul, um tom abaixo: encostar no tom do fundo da página apagaria a
      separação entre menu e conteúdo. */
   --sidebar: #16265c;
 
   color-scheme: dark;
+  --ring: var(--brand-blue-500);
+  --sidebar-foreground: #e2e8f0;
+  --sidebar-primary: var(--brand-blue-600);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: rgb(255 255 255 / 0.08);
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgb(255 255 255 / 0.1);
+  --sidebar-ring: var(--brand-yellow-500);
 }
 
 /* ==========================================================================

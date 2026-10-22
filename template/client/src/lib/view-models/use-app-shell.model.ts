@@ -1,3 +1,5 @@
+import { profileApi } from '../api/profile.api';
+import { useQuery } from '@tanstack/react-query';
 import { useLocation } from '@tanstack/react-router';
 import { USER_ROLE_LABELS } from '@template/shared/schemas/user.schema';
 
@@ -21,7 +23,13 @@ export type AppShellModel = {
  * simplesmente não aparece.
  */
 export function useAppShellModel(): AppShellModel {
-  const user = mockAuth.getUser();
+  const identity = useQuery({
+    queryKey: ['profile', 'me'],
+    queryFn: profileApi.me,
+    retry: false,
+    staleTime: 300_000,
+  });
+  const user = identity.data ?? mockAuth.getUser();
   const { pathname } = useLocation();
 
   return {

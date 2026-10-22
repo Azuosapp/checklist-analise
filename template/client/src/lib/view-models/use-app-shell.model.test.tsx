@@ -1,3 +1,8 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { type ReactNode } from 'react';
+vi.mock('../api/profile.api', () => ({
+  profileApi: { me: vi.fn().mockRejectedValue(new Error('Unavailable')) },
+}));
 import { renderHook } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -17,7 +22,11 @@ vi.mock('@tanstack/react-router', () => ({
 function renderAt(path: string) {
   pathname.current = path;
 
-  return renderHook(() => useAppShellModel()).result.current;
+  const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+  const wrapper = ({ children }: { children: ReactNode }) => (
+    <QueryClientProvider client={client}>{children}</QueryClientProvider>
+  );
+  return renderHook(() => useAppShellModel(), { wrapper }).result.current;
 }
 
 beforeEach(() => {
