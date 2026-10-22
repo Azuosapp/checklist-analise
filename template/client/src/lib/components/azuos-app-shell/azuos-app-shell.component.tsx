@@ -1,3 +1,4 @@
+import { AzuosThemeToggle } from '../azuos-theme-toggle/azuos-theme-toggle.component';
 import {
   AzuosSessionActions,
   type AzuosSessionActionsProps,
@@ -97,6 +98,10 @@ export function AzuosAppShell({ account, children, data, ui, state }: AzuosAppSh
       <SidebarInset className="border-sidebar-border bg-background border">
         <header className="flex h-12 shrink-0 items-center gap-2 px-4">
           <SidebarTrigger />
+          <div role="group" aria-label="Aparência" className="ml-auto flex items-center gap-2">
+            <span className="text-muted-foreground text-xs">Tema</span>
+            <AzuosThemeToggle ui={{ variant: 'surface' }} />
+          </div>
         </header>
 
         <div className="min-w-0 flex-1">{children}</div>

@@ -5,7 +5,7 @@ import { AzuosIdentityOverview } from './azuos-identity-overview.component';
 const person = { name: 'Ana Souza', email: 'ana@example.test', roleLabel: 'Consulta' };
 describe('AzuosIdentityOverview', () => {
   // feliz
-  it('shows the same identity, account link and theme control', () => {
+  it('shows identity and account details without a theme control', () => {
     render(
       <AzuosIdentityOverview
         data={{ person, accountUrl: 'https://account.example.test/profile' }}
@@ -16,7 +16,7 @@ describe('AzuosIdentityOverview', () => {
       'href',
       'https://account.example.test/profile',
     );
-    expect(screen.getByRole('button', { name: /Mudar para o tema/ })).toBeVisible();
+    expect(screen.queryByRole('button', { name: /Mudar para o tema/ })).not.toBeInTheDocument();
   });
   // triste
   it('shows the error without inventing an identity or account destination', () => {

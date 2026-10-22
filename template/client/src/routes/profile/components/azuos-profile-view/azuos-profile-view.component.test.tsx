@@ -3,14 +3,14 @@ import { describe, expect, it } from 'vitest';
 import { AzuosProfileView } from './azuos-profile-view.component';
 describe('AzuosProfileView', () => {
   // feliz
-  it('shows the person already identified by the system and appearance settings', () => {
+  it('shows the person already identified by the system and account details', () => {
     render(
       <AzuosProfileView
         data={{ user: { name: 'Ana Souza', email: 'ana@example.test', role: 'Consulta' } }}
       />,
     );
     expect(screen.getByRole('heading', { level: 1, name: 'Ana Souza' })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: 'Aparência' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Dados da conta' })).toBeInTheDocument();
   });
   // triste
   it('does not offer an account destination that was not configured', () => {
