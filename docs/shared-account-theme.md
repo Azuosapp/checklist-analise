@@ -13,7 +13,8 @@ receber foco, voltar do histórico, ficar visíveis e a cada dois segundos enqua
 visíveis. Cookies ou localStorage bloqueados não impedem alternar o tema na aba.
 
 As cores claras e escuras vêm dos tokens de `chamados`. A tela `/profile` reúne
-identidade, dados da conta e aparência. Os campos de organização só aparecem
+identidade e dados da conta. O controle de tema fica no cabeçalho do app shell,
+visível em todas as telas com menu, inclusive no celular ou com a barra recolhida. Os campos de organização só aparecem
 quando a identidade existente os fornece. O perfil do chamados mantém seu desenho
 e suas funções. O admin-console preserva os formulários de edição, foto e senha,
 e continua aceitando `/account` como endereço anterior.
