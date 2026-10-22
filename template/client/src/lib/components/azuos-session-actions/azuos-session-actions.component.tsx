@@ -1,7 +1,6 @@
 import { LogOut, UserRound } from 'lucide-react';
 
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '../ui/sidebar';
-import { AzuosThemeToggle } from '../azuos-theme-toggle/azuos-theme-toggle.component';
 
 export type AzuosSessionActionsProps = {
   state?: { isSigningOut?: boolean; error?: string | null };
@@ -38,12 +37,6 @@ export function AzuosSessionActions({ state, actions }: AzuosSessionActionsProps
           {state.error}
         </p>
       ) : null}
-      <div className="flex items-center justify-between gap-2 px-2 group-data-[collapsible=icon]:justify-center">
-        <span className="text-sidebar-foreground text-xs group-data-[collapsible=icon]:hidden">
-          Tema
-        </span>
-        <AzuosThemeToggle ui={{ variant: 'sidebar' }} />
-      </div>
     </>
   );
 }

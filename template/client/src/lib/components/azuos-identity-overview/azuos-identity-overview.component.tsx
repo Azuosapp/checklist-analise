@@ -1,8 +1,7 @@
 import { Fragment, type ReactNode } from 'react';
-import { Palette, Settings } from 'lucide-react';
+import { Settings } from 'lucide-react';
 
 import { AzuosActionButton } from '../azuos-action-button/azuos-action-button.component';
-import { AzuosThemeToggle } from '../azuos-theme-toggle/azuos-theme-toggle.component';
 
 export type AzuosIdentityOverviewProps = {
   data: {
@@ -16,7 +15,7 @@ export type AzuosIdentityOverviewProps = {
   actions?: { onRetry?: () => void };
 };
 
-/** Resumo de identidade e preferências: os mesmos cartões e tokens em todos os sistemas. */
+/** Resumo de identidade e dados da conta: os mesmos cartões e tokens em todos os sistemas. */
 export function AzuosIdentityOverview({
   data,
   state,
@@ -56,25 +55,6 @@ export function AzuosIdentityOverview({
             </Fragment>
           ))}
         </dl>
-      </div>
-
-      <div className="bg-card border-border rounded-surface border p-5 shadow-xs">
-        <div className="mb-4 flex items-start gap-3">
-          <Palette className="text-primary size-5 shrink-0" aria-hidden="true" />
-          <div>
-            <h2 className="text-foreground text-sm font-semibold">Aparência</h2>
-            <p className="text-muted-foreground mt-1 text-xs">
-              Sua escolha de tema vale em todos os sistemas do grupo neste navegador.
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center justify-between gap-4">
-          <div>
-            <h3 className="text-foreground text-sm font-medium">Tema</h3>
-            <p className="text-muted-foreground mt-1 text-xs">Alterne entre claro e escuro.</p>
-          </div>
-          <AzuosThemeToggle />
-        </div>
       </div>
 
       <AccountLink url={data.accountUrl} />
