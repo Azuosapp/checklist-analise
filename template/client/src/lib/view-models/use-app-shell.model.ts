@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { USER_ROLE_LABELS } from '@template/shared/schemas/user.schema';
 
+import { accountProfileApi } from '../api/account-profile.api';
 import { profileApi } from '../api/profile.api';
 import { mockAuth } from '../auth/mock-user';
 import { NAVIGATION } from '../navigation/navigation';
@@ -26,13 +27,21 @@ export function useAppShellModel() {
     staleTime: 300_000,
   });
   const user = identity.data ?? mockAuth.getUser();
+  /* A FOTO vem da conta no Admin Console, a mesma do "Meu perfil" (mesma chave: uma consulta só).
+     O banco deste sistema não guarda foto, e o rodapé do menu mostrava só as iniciais. */
+  const account = useQuery({
+    queryKey: ['account', 'me', 'profile'],
+    queryFn: accountProfileApi.me,
+    staleTime: 5 * 60 * 1000,
+    retry: false,
+  });
   const navigation = useAppShellNavigationModel(NAVIGATION, { isAdmin: user.role === 'admin' });
   const session = useAccountSessionModel();
 
   return {
     data: {
       ...navigation.data,
-      user: { name: user.name, role: USER_ROLE_LABELS[user.role] },
+      user: { name: user.name, role: USER_ROLE_LABELS[user.role], avatarUrl: account.data?.profile.avatarUrl ?? null },
       badges: {},
     },
     state: {
