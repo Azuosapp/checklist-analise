@@ -1,4 +1,3 @@
-import { useAccountSessionModel } from '../lib/view-models/use-account-session.model';
 import { createRootRoute, Outlet } from '@tanstack/react-router';
 
 import { AzuosAppShell } from '../lib/components/azuos-app-shell/azuos-app-shell.component';
@@ -15,11 +14,10 @@ export const Route = createRootRoute({
 });
 
 function RootRoute() {
-  const { data, state } = useAppShellModel();
-  const account = useAccountSessionModel();
+  const { data, state, actions } = useAppShellModel();
 
   return (
-    <AzuosAppShell account={account} data={data} state={state}>
+    <AzuosAppShell data={data} state={state} actions={actions}>
       <Outlet />
     </AzuosAppShell>
   );

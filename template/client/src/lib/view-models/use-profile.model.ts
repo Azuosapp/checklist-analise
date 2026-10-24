@@ -1,25 +1,25 @@
-import { useQuery } from '@tanstack/react-query';
 import { USER_ROLE_LABELS } from '@template/shared/schemas/user.schema';
-import { profileApi } from '../api/profile.api';
-import { accountProfileUrl } from '../api/account-session.api';
 
-/** A identidade é lida do servidor; nunca se afirma uma pessoa fixa na tela de perfil. */
+import { mockAuth } from '../auth/mock-user';
+import { useMyProfileModel } from './use-my-profile.model';
+
+/**
+ * De onde sai a ficha de "Meu perfil" NESTE sistema: a mesma pessoa fixa do menu, enquanto não
+ * há provedor de identidade. Foto, cargo e departamento chegam quando o servidor os trouxer.
+ */
 export function useProfileModel() {
-  const profile = useQuery({
-    queryKey: ['profile', 'me'],
-    queryFn: profileApi.me,
-    retry: false,
-    staleTime: 300_000,
+  const user = mockAuth.getUser();
+
+  return useMyProfileModel({
+    person: {
+      name: user.name,
+      email: user.email,
+      roleLabel: USER_ROLE_LABELS[user.role],
+      avatarUrl: null,
+      jobTitle: null,
+      department: null,
+    },
+    isLoading: false,
+    error: null,
   });
-  const user = profile.data;
-  return {
-    data: {
-      user: user ? { ...user, role: USER_ROLE_LABELS[user.role] } : null,
-      accountUrl: accountProfileUrl(),
-    },
-    state: {
-      isLoading: profile.isPending,
-      error: profile.error ? 'Não consegui carregar seu perfil. Tente novamente.' : null,
-    },
-  };
 }

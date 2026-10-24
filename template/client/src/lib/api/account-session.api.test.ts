@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { accountOrigin, signOutAccount } from './account-session.api';
+import { accountOrigin, accountProfileUrl, signOutAccount } from './account-session.api';
 afterEach(() => {
   vi.unstubAllGlobals();
   vi.unstubAllEnvs();
@@ -44,5 +44,39 @@ describe('account session', () => {
   it('propagates a connection failure', async () => {
     vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('Offline')));
     await expect(signOutAccount()).rejects.toThrow('Offline');
+  });
+});
+
+describe('account profile destination', () => {
+  // feliz
+  it.each([
+    ['localhost', 'http://localhost:5000/profile'],
+    ['127.0.0.1', 'http://localhost:5000/profile'],
+    ['certmonitor.homo.grupoazuos.com.br', 'https://admin-console.homo.grupoazuos.com.br/profile'],
+    ['certmonitor.grupoazuos.com.br', 'https://admin-console.grupoazuos.com.br/profile'],
+  ])('uses the same destination as RH for %s', (hostname, expected) => {
+    vi.stubGlobal('window', { location: { hostname } });
+    vi.stubEnv('VITE_ACCOUNT_URL', '');
+
+    expect(accountProfileUrl()).toBe(expected);
+  });
+
+  it('uses the configured origin for a custom domain or local port', () => {
+    vi.stubGlobal('window', { location: { hostname: 'localhost' } });
+    vi.stubEnv('VITE_ACCOUNT_URL', 'http://localhost:5100/');
+
+    expect(accountProfileUrl()).toBe('http://localhost:5100/profile');
+  });
+
+  // triste
+  it.each([
+    ['unrelated.test', ''],
+    ['grupoazuos.com.br.unrelated.test', ''],
+    ['localhost', 'invalid-url'],
+  ])('offers no destination for %s with configuration %s', (hostname, configured) => {
+    vi.stubGlobal('window', { location: { hostname } });
+    vi.stubEnv('VITE_ACCOUNT_URL', configured);
+
+    expect(accountProfileUrl()).toBeNull();
   });
 });

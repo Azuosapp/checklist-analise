@@ -34,11 +34,11 @@ export function readThemeCookie(): Theme | null {
 export function initialTheme(): Theme {
   const shared = readThemeCookie();
   if (shared) return shared;
-  if (typeof window === 'undefined') return 'dark';
+  if (typeof window === 'undefined') return 'light';
   try {
-    return parseTheme(window.localStorage.getItem(KEY)) ?? 'dark';
+    return parseTheme(window.localStorage.getItem(KEY)) ?? 'light';
   } catch {
-    return 'dark';
+    return 'light';
   }
 }
 

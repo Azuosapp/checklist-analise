@@ -18,12 +18,12 @@ afterEach(() => {
 
 describe('shared theme cookie', () => {
   // feliz
-  it('uses dark by default and migrates the previous browser preference', () => {
-    expect(initialTheme()).toBe('dark');
-    localStorage.setItem('azuos-theme', 'light');
+  it('uses light by default and migrates the previous browser preference', () => {
+    expect(initialTheme()).toBe('light');
+    localStorage.setItem('azuos-theme', 'dark');
     const store = createThemeStore();
-    expect(store.read()).toBe('light');
-    expect(readThemeCookie()).toBe('light');
+    expect(store.read()).toBe('dark');
+    expect(readThemeCookie()).toBe('dark');
   });
   it('gives the shared cookie priority over stale localStorage', () => {
     localStorage.setItem('azuos-theme', 'light');
@@ -50,7 +50,7 @@ describe('shared theme cookie', () => {
   it('ignores malformed preferences', () => {
     document.cookie = 'azuos-theme=purple; Path=/';
     localStorage.setItem('azuos-theme', 'invalid');
-    expect(initialTheme()).toBe('dark');
+    expect(initialTheme()).toBe('light');
   });
   it('keeps cookies usable when localStorage is blocked', () => {
     vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
@@ -67,14 +67,14 @@ describe('shared theme cookie', () => {
     const store = createThemeStore();
     const listener = vi.fn();
     const unsubscribe = store.subscribe(listener);
-    document.cookie = 'azuos-theme=light; Path=/';
-    window.dispatchEvent(new Event('focus'));
-    expect(store.read()).toBe('light');
-    expect(document.documentElement.dataset.theme).toBe('light');
-    expect(listener).toHaveBeenCalledOnce();
     document.cookie = 'azuos-theme=dark; Path=/';
-    vi.advanceTimersByTime(2000);
+    window.dispatchEvent(new Event('focus'));
     expect(store.read()).toBe('dark');
+    expect(document.documentElement.dataset.theme).toBe('dark');
+    expect(listener).toHaveBeenCalledOnce();
+    document.cookie = 'azuos-theme=light; Path=/';
+    vi.advanceTimersByTime(2000);
+    expect(store.read()).toBe('light');
     unsubscribe();
     expect(vi.getTimerCount()).toBe(0);
   });
