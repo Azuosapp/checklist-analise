@@ -18,7 +18,7 @@
     <script>
       // O cookie do grupo vence a preferência antiga, antes da primeira pintura.
       (() => {
-        let theme = 'dark';
+        let theme = 'light';
         try {
           const cookie = document.cookie
             .split(';')
@@ -29,7 +29,7 @@
             cookie === 'light' || cookie === 'dark' ? cookie : localStorage.getItem('azuos-theme');
           if (saved === 'light' || saved === 'dark') theme = saved;
         } catch {
-          /* Sem armazenamento, o tema escuro continua disponível. */
+          /* Sem armazenamento, fica no tema claro padrão. */
         }
         document.documentElement.setAttribute('data-theme', theme);
       })();
